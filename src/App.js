@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
 
 //import pages 
 import Home from "./pages/Home";
@@ -10,6 +11,7 @@ function App() {
   return (
     <div className="App h-screen bg-purple-400">
       <BrowserRouter>
+      <NavBar />
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="login" element={<Login/>}/>
