@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+//Custom Hook importation from context file
+import { useAuth } from "../context/authContext"
 
 const Register = () => {
-
+  
   const [user, setUser] = useState({
     email:"",
     password:""
-  })
-
+  });
+  const [error, setError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  //Custom hook instantiation
+  const { signUp } = useAuth();
+
 
   const handleChange = (e) => {
     setUser((prevProps)=> ({
@@ -17,15 +23,24 @@ const Register = () => {
     }));
   };
 
-  const handleRegistration = (e) => {
-    e.preventDefault()
+  const handleRegistration = async(e) => {
+    e.preventDefault();
+    setError("");
     if (user.password !== confirmPassword) {
       return alert("Passwords do not match");
     }
-    
+    try{
+      await signUp(user.email, user.password)
+    } catch(error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`Error ocurred: ${errorCode}, ${errorMessage}`)
+      setError(errorMessage)
+    }
   }
   return (
     <div>
+      {error && <p>{error}</p>}
       <form onSubmit={handleRegistration}>
         <div>
           <label>Email</label>
