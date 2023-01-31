@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+//Custom Hook importation from context file
+import { useAuth } from "../context/authContext"
 
 const Login = () => {
   const [user, setUser] = useState({
     email:"",
     password:""
   });
-  const [ error, setError] = useState("");
+  const [error, setError] = useState("");
+
+    //Custom hook instantiation
+    const { login } = useAuth();
 
   const handleChange = (e) => {
     setUser((prevProps) =>({
@@ -15,14 +20,23 @@ const Login = () => {
     }));
   };
 
-  const handleLogin = (e)=>{
+  const handleLogin = async(e)=>{
     e.preventDefault();
     setError("")
+    try{
+      await login(user.email, user.password)
+    }catch(err){
+      const errorCode = err.code;
+      const errorMessage = err.message;
+      console.log(`An error ocurred: ${errorCode}, ${errorMessage}`);
+      setError(errorMessage);
+    }
   }
 
 
   return (
     <div>
+      {error && <p>{error}</p>}
       <form onSubmit={handleLogin}>
         <div>
           <label>Email</label>
