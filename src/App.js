@@ -1,3 +1,5 @@
+import { AuthProvider } from "./context/authContext";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 
@@ -8,17 +10,20 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import Register from "./pages/Register";
 
 function App() {
-  return (
+    return (
     <div className="App h-screen bg-purple-400">
-      <BrowserRouter>
-      <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />}/>
-          <Route path="login" element={<Login/>}/>
-          <Route path="register" element={<Register />}/>
-          <Route path="protectedroute" element={<ProtectedRoute />}/>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+        <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />}/>
+            <Route path="login" element={<Login/>}/>
+            <Route path="register" element={<Register />}/>
+            <Route path="protectedroute" element={<ProtectedRoute />}/>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+
     </div>
   );
 }
